@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+  
+  # Add this job to all workflows
+  disable-enable:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo ${BRANCH}
+      - run: echo ${CIRCLE_BRANCH}
+      - run:
+          name: Check contexts environment name
+          shell: /bin/bash
+          command: |
+              if [[ $CIRCLE_BRANCH == $BRANCH ]]; then
+                   echo "Branch match --> go go go"
+                   exit 0
+                 else 
+                   echo "Branch miss match --> STOP!!!"
+              fi
+              exit 99
+
+  release:
+    docker:
+      - image: cimg/node:lts
+    steps:
+
+      - run: npm install
+      - run: npm build
+      - run: npm publish
+
+workflows:
+
+  release-workflows:
+    jobs:
+    # Add this job to all workflows
+    - disable-enable:
+        context:
+          - DisableEnable
+    - release:
+        requires:
+          - "disable-enable" # Add this requires jobs to all workflows
