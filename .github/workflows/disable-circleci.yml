@@ -1,6 +1,6 @@
 on:
 
-  workflow_dispatch:      # Run manaual workflows
+  workflow_dispatch:                       # Run manaual workflows
       
 jobs:
 
