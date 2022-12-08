@@ -7,7 +7,7 @@ env:
   
 jobs:
 
-  disable-github-actions:                 # Job name "enable-github-actions"
+  disable-github-actions:                 # Job name "disable-github-actions"
     runs-on: ubuntu-latest                # OS selection for run
     steps:
       - name: Check out                   # step name "Check out"
