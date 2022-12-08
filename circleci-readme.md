@@ -3,8 +3,9 @@
 
   Name  = ` BRANCH `
   
-  Value = ` main ` for Enable workflows (If github repository branch = main)
-          ` {any words or string} ` for Disable workflows
+  Value = ` main ` for **Enable workflows** (If github repository branch = main)
+          
+  Value = ` {any words or string} ` for **Disable workflows**
 
 2. Insert this job to first job
 
@@ -24,7 +25,7 @@
                    echo "Branch match --> go go go"
                    exit 0
                  else 
-                   echo "Branch miss match --> STOP!!!"
+                   echo "Branch missmatch --> STOP!!!"
               fi
               exit 99
 ```
