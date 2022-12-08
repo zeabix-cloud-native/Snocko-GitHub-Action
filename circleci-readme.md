@@ -3,7 +3,7 @@
 
   Name  = ` BRANCH `
   
-  Value = ` main ` for Enable workflows (If github repositoey branch = main)
+  Value = ` main ` for Enable workflows (If github repository branch = main)
           ` {any words or string} ` for Disable workflows
 
 2. Insert this job to first job
