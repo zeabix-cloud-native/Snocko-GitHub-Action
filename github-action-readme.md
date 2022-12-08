@@ -38,7 +38,7 @@
 
 ### 2. Change organization owner name
 
-1. Change organization name at line 6 of disable-circleci.yml and enable-circleci.yml files
+Change organization name at `line 6` of **disable-circleci.yml and enable-circleci.yml files**
 
 <img width="667" alt="image" src="https://user-images.githubusercontent.com/46469458/206383502-905c7426-76f4-42ac-a918-19e3430d2893.png">
 
