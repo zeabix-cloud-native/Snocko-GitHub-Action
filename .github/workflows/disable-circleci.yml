@@ -1,6 +1,6 @@
 on:
 
-  workflow_dispatch:  #Please remove this line
+  workflow_dispatch: # Run manaual workflows
       
 jobs:
 
