@@ -1,24 +1,23 @@
 on:
 
-  workflow_dispatch: # Run manaual workflows
+  workflow_dispatch:      # Run manaual workflows
       
 jobs:
 
-  enable-github-actions:
-    runs-on: ubuntu-latest
+  enable-github-actions:                   # Job name "enable-github-actions"
+    runs-on: ubuntu-latest                 # OS selection for run
     steps:
-      - name: Check out
-        uses: actions/checkout@v3
-      - name: Create root directory
-        run: |
+      - name: Check out                    # step name "Check out"
+        uses: actions/checkout@v3          # checkout repository
+      - name: Create root directory        # step name "Create root directory"
+        run: |                             # Run command line
           mkdir enable-github-actions
           cd enable-github-actions
-      - name: Enable Github actions workflows
-        shell: bash
-        continue-on-error: true
-        env:
-         GH_TOKEN: ${{ secrets.CD_PAT }}
-        run: |
+      - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
+        shell: bash                              # Use bash shell
+        env:                                     # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}         # Environment name: GH_TOKEN, value= secret name CD_PAT
+        run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
               echo "Processing repository $line"
@@ -56,12 +55,11 @@ jobs:
               cd .. 
           done <$file
 
-      - name: Get Github actions workflows status
-        shell: bash
-        continue-on-error: true
-        env:
-         GH_TOKEN: ${{ secrets.CD_PAT }}
-        run: |
+      - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
+        shell: bash                                       # Use bash shell
+        env:                                              # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}                  # Environment name: GH_TOKEN, value= secret name CD_PAT
+        run: |                                            # Run command line
           file="repo.txt"
           while read -r line; do
               cd $line
