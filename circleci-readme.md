@@ -2,6 +2,7 @@
 1. Create organization contexts environment variable 
 
   Name  = ` BRANCH `
+  
   Value = ` main ` for Enable workflows (If github repositoey branch = main)
           ` {any words or string} ` for Disable workflows
 
@@ -13,8 +14,8 @@
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - run: echo ${BRANCH}
-      - run: echo ${CIRCLE_BRANCH}
+      - run: echo ${BRANCH}         # Optional
+      - run: echo ${CIRCLE_BRANCH}  # Optional
       - run:
           name: Check contexts environment name
           shell: /bin/bash
