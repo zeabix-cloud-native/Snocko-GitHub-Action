@@ -16,10 +16,12 @@ jobs:
           CICD: ${{ secrets.CICD }}
         run: |
           echo ::set-output name=env::$CICD
+    outputs:
+      env: ${{ steps.cicd-env.outputs }}
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
-    if: ${{ needs.jobs.check-secrets.cicd-env.outputs.env == 'githubactions' }}
+    if: ${{ needs.check-secrets.outputs.env == 'githubactions' }}
     steps:
 #      - name: test CICD env
 #        id: cicd-env
@@ -80,38 +82,38 @@ jobs:
 #              cd .. 
 #          done <$file
 
-      - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
-        shell: bash                                       # Use bash shell
-        env:                                              # Set environment variable
-         GH_TOKEN: ${{ secrets.CD_PAT }}                  # Environment name: GH_TOKEN, value= secret name CD_PAT
-        run: |                                            # Run command line
-          file="repo.txt"
-          while read -r line; do
-              cd $line
-              gh api \
-              -H "Accept: application/vnd.github+json" \
-              /repos/$owner/$line/actions/workflows | jq '.workflows | .[].id' >> $line-StatusId.txt
-              echo "Get $line workflows status"
-              file=$line-StatusId.txt
-              while read -r STATUS; do
-                  echo ID=$(gh api \
-                  -H "Accept: application/vnd.github+json" \
-                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.id') 
-                  echo NAME=$(gh api \
-                  -H "Accept: application/vnd.github+json" \
-                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.name')
-                  echo STATUS=$(gh api \
-                  -H "Accept: application/vnd.github+json" \
-                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.state')
-                   echo "----------------------------------------------------------------"
-              done <$file
-              echo "#################################################################"
-              cd .. 
-          done <$file 
+#      - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
+#        shell: bash                                       # Use bash shell
+#        env:                                              # Set environment variable
+#         GH_TOKEN: ${{ secrets.CD_PAT }}                  # Environment name: GH_TOKEN, value= secret name CD_PAT
+#        run: |                                            # Run command line
+#          file="repo.txt"
+#          while read -r line; do
+#              cd $line
+#              gh api \
+#              -H "Accept: application/vnd.github+json" \
+#              /repos/$owner/$line/actions/workflows | jq '.workflows | .[].id' >> $line-StatusId.txt
+#              echo "Get $line workflows status"
+#              file=$line-StatusId.txt
+#              while read -r STATUS; do
+#                  echo ID=$(gh api \
+#                  -H "Accept: application/vnd.github+json" \
+#                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.id') 
+#                  echo NAME=$(gh api \
+#                  -H "Accept: application/vnd.github+json" \
+#                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.name')
+#                  echo STATUS=$(gh api \
+#                  -H "Accept: application/vnd.github+json" \
+#                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.state')
+#                   echo "----------------------------------------------------------------"
+#              done <$file
+#              echo "#################################################################"
+#              cd .. 
+#          done <$file 
 
   disable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
-    if: ${{ needs.jobs.check-secrets.cicd-env.outputs.env == 'circleci' }}
+    if: ${{ needs.check-secrets.outputs.env == 'circleci' }}
     steps:
       - name: Disable Github actions workflows
         run: echo 2
