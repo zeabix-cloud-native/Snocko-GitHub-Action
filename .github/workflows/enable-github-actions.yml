@@ -7,42 +7,38 @@ env:
 
 jobs:
 
-#  check-secrets:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      cicd-output: ${{ steps.cicd-env.outputs }}
-#    steps:
-#      - name: test CICD env
-#        id: cicd-env
-#        env: 
-#          CICD: ${{ secrets.CICD }}
-##        if: env.CICD == 'githubactions'
-#        run: |
-#          echo "$CICD" >> $GITHUB_OUTPUT
-
-  enable-github-actions:                   # Job name "enable-github-actions"
-    runs-on: ubuntu-latest                 # OS selection for run
+  check-secrets:
+    runs-on: ubuntu-latest
     steps:
       - name: test CICD env
         id: cicd-env
         env: 
           CICD: ${{ secrets.CICD }}
-#        if: env.CICD == 'githubactions'
         run: |
           echo ::set-output name=env::$CICD
-          
-      - name: Check out                    # step name "Check out" 
-        uses: actions/checkout@v3          # checkout repository
-      - name: Create root directory        # step name "Create root directory"
-        run: |                             # Run command line
-          mkdir enable-github-actions
-          cd enable-github-actions
+
+  enable-github-actions:                   # Job name "enable-github-actions"
+    runs-on: ubuntu-latest                 # OS selection for run
+    if: ${{ jobs.check-secrets.cicd-env.outputs.env == 'githubactions' }}
+    steps:
+#      - name: test CICD env
+#        id: cicd-env
+#        env: 
+#          CICD: ${{ secrets.CICD }}
+#        run: |
+#          echo ::set-output name=env::$CICD          
+#      - name: Check out                    # step name "Check out" 
+#        uses: actions/checkout@v3          # checkout repository
+#      - name: Create root directory        # step name "Create root directory"
+#        run: |                             # Run command line
+#          mkdir enable-github-actions
+#          cd enable-github-actions
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
-        if: ${{ steps.cicd-env.outputs.env == 'githubactions' }}
+#        if: ${{ steps.cicd-env.outputs.env == 'githubactions' }}
         run: echo 1
-      - name: Disable Github actions workflows    # step name "Enable Github actions workflows"
-        if: ${{ steps.cicd-env.outputs.env == 'circleci' }}
-        run: echo 2
+#      - name: Disable Github actions workflows    # step name "Enable Github actions workflows"
+#        if: ${{ steps.cicd-env.outputs.env == 'circleci' }}
+#        run: echo 2
 #        shell: bash                              # Use bash shell
 #        env:                                     # Set environment variable
 #         GH_TOKEN: ${{ secrets.CD_PAT }}         # Environment name: GH_TOKEN, value= secret name CD_PAT
@@ -113,15 +109,9 @@ jobs:
               cd .. 
           done <$file 
 
-#  disable-github-actions:                   # Job name "enable-github-actions"
-#    runs-on: ubuntu-latest                 # OS selection for run
-#    needs: [check-secrets]
-#    if: ${{ needs.check-secrets.output.cicd-output == 'circleci'}}
-#    steps:
-#      - name: Check out                    # step name "Check out"
-#        uses: actions/checkout@v3          # checkout repository
-#      - name: Create root directory        # step name "Create root directory"
-#        run: |                             # Run command line
-#          mkdir disable-github-actions
-#          cd disable-github-actions
-#          pwd
+  disable-github-actions:                   # Job name "enable-github-actions"
+    runs-on: ubuntu-latest                 # OS selection for run
+    if: ${{ jobs.check-secrets.cicd-env.outputs.env == 'circleci' }}
+    steps:
+      - name: Disable Github actions workflows
+        run: echo 2
