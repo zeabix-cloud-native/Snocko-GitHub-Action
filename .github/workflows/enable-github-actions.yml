@@ -10,8 +10,13 @@ jobs:
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
     steps:
-      - if: ${{ secrets.CICD == 'githubactions' }}
-        run: echo "$CICD"
+      - name: test CICD env
+        env: 
+          CICD: ${{ secrets.CICD }}
+        if: env.CICD == 'githubactions'
+        run: |
+          echo "$CICD"
+          echo env.CICD
       - name: Check out                    # step name "Check out"
         uses: actions/checkout@v3          # checkout repository
       - name: Create root directory        # step name "Create root directory"
