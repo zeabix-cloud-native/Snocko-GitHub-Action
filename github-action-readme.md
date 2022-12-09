@@ -2,7 +2,7 @@
 
 ## Prerequisite
 
-### 1. Create PAT (Personal Access Token)
+### Create PAT (Personal Access Token)
 
 1. In the upper-right corner of any page, click your profile photo, then click **Settings.**
 
