@@ -16,13 +16,13 @@ jobs:
         if: env.CICD == 'githubactions'
         run: |
           echo "$CICD"
-          echo env.CICD
       - name: Check out                    # step name "Check out"
         uses: actions/checkout@v3          # checkout repository
       - name: Create root directory        # step name "Create root directory"
         run: |                             # Run command line
           mkdir enable-github-actions
           cd enable-github-actions
+          pwd
 #      - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
 #        shell: bash                              # Use bash shell
 #        env:                                     # Set environment variable
@@ -93,4 +93,20 @@ jobs:
 #              echo "#################################################################"
 #              cd .. 
 #          done <$file 
-#
+
+  disable-github-actions:                   # Job name "enable-github-actions"
+    runs-on: ubuntu-latest                 # OS selection for run
+    steps:
+      - name: test CICD env
+        env: 
+          CICD: ${{ secrets.CICD }}
+        if: env.CICD == 'circleci'
+        run: |
+          echo "$CICD"
+      - name: Check out                    # step name "Check out"
+        uses: actions/checkout@v3          # checkout repository
+      - name: Create root directory        # step name "Create root directory"
+        run: |                             # Run command line
+          mkdir disable-github-actions
+          cd disable-github-actions
+          pwd
