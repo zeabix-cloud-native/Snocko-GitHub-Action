@@ -31,7 +31,7 @@ jobs:
           CICD: ${{ secrets.CICD }}
         run: |
           #echo ::set-output name=env::$CICD
-          echo "cicd-secrets=${{ secrets.CICD }}" >> $GITHUB_OUTPUT      
+          echo "export cicd-secrets=$CICD" >> $GITHUB_OUTPUT      
 #      - name: Check out                    # step name "Check out" 
 #        uses: actions/checkout@v3          # checkout repository
 #      - name: Create root directory        # step name "Create root directory"
