@@ -17,7 +17,7 @@ jobs:
         run: |
           echo ::set-output name=env::$CICD
     outputs:
-      env: ${{ steps.cicd-env.outputs }}
+      env: ${{ steps.cicd-env.outputs.env }}
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
