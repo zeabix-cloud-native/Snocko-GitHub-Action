@@ -19,7 +19,7 @@ jobs:
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
-    if: ${{ jobs.check-secrets.cicd-env.outputs.env == 'githubactions' }}
+    if: ${{ needs.jobs.check-secrets.cicd-env.outputs.env == 'githubactions' }}
     steps:
 #      - name: test CICD env
 #        id: cicd-env
@@ -111,7 +111,7 @@ jobs:
 
   disable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
-    if: ${{ jobs.check-secrets.cicd-env.outputs.env == 'circleci' }}
+    if: ${{ needs.jobs.check-secrets.cicd-env.outputs.env == 'circleci' }}
     steps:
       - name: Disable Github actions workflows
         run: echo 2
