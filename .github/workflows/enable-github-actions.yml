@@ -40,7 +40,7 @@ jobs:
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.env == 'githubactions' }}
         run: echo 1
-      - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
+      - name: Disable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.env == 'circleci' }}
         run: echo 2
 #        shell: bash                              # Use bash shell
