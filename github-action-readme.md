@@ -2,7 +2,7 @@
 
 ## Prerequisite
 
-### 1. Create PAT (Personal Access Token)
+### Create PAT (Personal Access Token)
 
 1. In the upper-right corner of any page, click your profile photo, then click **Settings.**
 
@@ -36,12 +36,6 @@
 
 ![image](https://user-images.githubusercontent.com/46469458/206353540-4c932426-26fc-415a-8049-3769d56a72c0.png)
 
-### 2. Change organization owner name
-
-Change organization name at `line 6` of **disable-circleci.yml and enable-circleci.yml files**
-
-<img width="667" alt="image" src="https://user-images.githubusercontent.com/46469458/206383502-905c7426-76f4-42ac-a918-19e3430d2893.png">
-
 ---
 Reference : https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 
@@ -62,7 +56,7 @@ Reference : https://docs.github.com/en/enterprise-server@3.4/authentication/keep
 #### Explain code 
 
 <img width="502" alt="image" src="https://user-images.githubusercontent.com/46469458/206356687-3b0a0714-4891-4653-8fe5-1f8847dc6c77.png">
-<img width="667" alt="image" src="https://user-images.githubusercontent.com/46469458/206383502-905c7426-76f4-42ac-a918-19e3430d2893.png">
+<img width="483" alt="image" src="https://user-images.githubusercontent.com/46469458/206620473-20b328e1-3d84-45a0-8ea1-3f42d42499c4.png">
 <img width="574" alt="image" src="https://user-images.githubusercontent.com/46469458/206356754-a81a5051-a163-4e03-8a80-fa6fc669f9b0.png">
 <img width="581" alt="image" src="https://user-images.githubusercontent.com/46469458/206356880-8f00ed6e-2292-4c7e-ac4d-829e46d838f2.png">
 <img width="722" alt="image" src="https://user-images.githubusercontent.com/46469458/206383808-7f85208d-f779-476d-a094-9ee5792916b7.png">
@@ -88,7 +82,7 @@ Reference : https://docs.github.com/en/enterprise-server@3.4/authentication/keep
 #### Explain code 
 
 <img width="502" alt="image" src="https://user-images.githubusercontent.com/46469458/206356687-3b0a0714-4891-4653-8fe5-1f8847dc6c77.png">
-<img width="667" alt="image" src="https://user-images.githubusercontent.com/46469458/206383502-905c7426-76f4-42ac-a918-19e3430d2893.png">
+<img width="483" alt="image" src="https://user-images.githubusercontent.com/46469458/206620473-20b328e1-3d84-45a0-8ea1-3f42d42499c4.png">
 <img width="752" alt="image" src="https://user-images.githubusercontent.com/46469458/206385100-c783b356-19da-46a6-8d5b-dcaad44aefb8.png">
 <img width="697" alt="image" src="https://user-images.githubusercontent.com/46469458/206385603-78b9fe20-782d-4187-8b75-40100a51311e.png">
 <img width="813" alt="image" src="https://user-images.githubusercontent.com/46469458/206385321-2f06180b-438d-4793-b758-be281b6eced1.png">
