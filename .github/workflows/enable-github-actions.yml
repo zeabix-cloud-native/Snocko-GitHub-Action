@@ -10,7 +10,7 @@ jobs:
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
-    if: $CICD == 'githubactions'
+    if: ${{ secrets.CICD }} == 'githubactions'
     steps:
       - run: echo "$CICD"
       - name: Check out                    # step name "Check out"
