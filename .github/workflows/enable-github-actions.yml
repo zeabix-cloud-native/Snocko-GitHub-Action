@@ -18,7 +18,7 @@ jobs:
           #echo ::set-output name=cicd-secrets::$CICD
           echo "export cicd-secrets=${{ secrets.CICD }}" >> $GITHUB_OUTPUT
     outputs:
-      env: ${{ steps.cicd-env.outputs.env }}
+      env: ${{ steps.cicd-env.outputs.cicd-secrets }}
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
