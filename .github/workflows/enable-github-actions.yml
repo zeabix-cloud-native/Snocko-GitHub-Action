@@ -7,16 +7,25 @@ env:
 
 jobs:
 
-  enable-github-actions:                   # Job name "enable-github-actions"
-    runs-on: ubuntu-latest                 # OS selection for run
+  check-secrets:
+    runs-on: ubuntu-latest
+    outputs:
+      cicd-output: ${{ steps.cicd-env.outputs }}
     steps:
       - name: test CICD env
+        id: cicd-env
         env: 
           CICD: ${{ secrets.CICD }}
-        if: env.CICD == 'githubactions'
+#        if: env.CICD == 'githubactions'
         run: |
-          echo "$CICD"
-      - name: Check out                    # step name "Check out"
+          echo "$CICD" >> $GITHUB_OUTPUT
+
+  enable-github-actions:                   # Job name "enable-github-actions"
+    runs-on: ubuntu-latest                 # OS selection for run
+    needs: [check-secrets]
+    if: ${{ needs.check-secrets.output.cicd-output == 'githubactions'}}
+    steps:
+      - name: Check out                    # step name "Check out" 
         uses: actions/checkout@v3          # checkout repository
       - name: Create root directory        # step name "Create root directory"
         run: |                             # Run command line
@@ -96,6 +105,7 @@ jobs:
 
   disable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
+    needs: [check-secrets]
     steps:
       - name: test CICD env
         env: 
