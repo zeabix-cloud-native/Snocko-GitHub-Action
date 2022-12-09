@@ -4,12 +4,15 @@ on:
 
 env:
   owner: "${{ github.repository_owner }}"  # Get owner name
+  CICD: "${{ secrets.CICD }}"
 
 jobs:
 
   enable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
+    if: $CICD == 'githubactions'
     steps:
+      - run: echo "$CICD"
       - name: Check out                    # step name "Check out"
         uses: actions/checkout@v3          # checkout repository
       - name: Create root directory        # step name "Create root directory"
