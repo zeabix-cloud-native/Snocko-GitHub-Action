@@ -35,7 +35,7 @@ jobs:
          GH_TOKEN: ${{ secrets.CD_PAT }}         # Environment name: GH_TOKEN, value= secret name CD_PAT
          CICD: ${{ secrets.CICD }}
         run: |                                   # Run command line
-          if [[ $CICD == 'githubactions' ]]; then
+          if [[ env.CICD == 'githubactions' ]]; then
                  mkdir enable-github-actions
                  cd enable-github-actions
                  file="repo.txt"
@@ -75,7 +75,7 @@ jobs:
                      cd .. 
                  done <$file
                  exit 0
-          elif [[ $CICD == 'circleci' ]]; then
+          elif [[ env.CICD == 'circleci' ]]; then
                  mkdir disable-github-actions
                  cd disable-github-actions
                  file="repo.txt"
