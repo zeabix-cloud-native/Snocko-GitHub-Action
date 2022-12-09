@@ -106,13 +106,8 @@ jobs:
   disable-github-actions:                   # Job name "enable-github-actions"
     runs-on: ubuntu-latest                 # OS selection for run
     needs: [check-secrets]
+    if: ${{ needs.check-secrets.output.cicd-output == 'circleci'}}
     steps:
-      - name: test CICD env
-        env: 
-          CICD: ${{ secrets.CICD }}
-        if: env.CICD == 'circleci'
-        run: |
-          echo "$CICD"
       - name: Check out                    # step name "Check out"
         uses: actions/checkout@v3          # checkout repository
       - name: Create root directory        # step name "Create root directory"
