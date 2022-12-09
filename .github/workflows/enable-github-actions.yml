@@ -38,10 +38,10 @@ jobs:
           mkdir enable-github-actions
           cd enable-github-actions
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
-        if: ${{ step.cicd-env.outputs.env == 'githubactions' }}
+        if: ${{ steps.cicd-env.outputs.env == 'githubactions' }}
         run: echo 1
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
-        if: ${{ step.cicd-env.outputs.env == 'circleci' }}
+        if: ${{ steps.cicd-env.outputs.env == 'circleci' }}
         run: echo 2
 #        shell: bash                              # Use bash shell
 #        env:                                     # Set environment variable
