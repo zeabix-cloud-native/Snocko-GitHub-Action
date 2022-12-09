@@ -82,3 +82,17 @@ Reference : https://docs.github.com/en/enterprise-server@3.4/authentication/keep
 2. Run this workflows **after enable circleci workflows and before commit file to github** to disable github actions workflows
 
 <img width="1494" alt="image" src="https://user-images.githubusercontent.com/46469458/206346321-6aa8bc40-329a-4154-9743-4f45dac4da4f.png">
+
+3. commit file to github to run circleci workflows
+
+#### Explain code 
+
+<img width="502" alt="image" src="https://user-images.githubusercontent.com/46469458/206356687-3b0a0714-4891-4653-8fe5-1f8847dc6c77.png">
+<img width="667" alt="image" src="https://user-images.githubusercontent.com/46469458/206383502-905c7426-76f4-42ac-a918-19e3430d2893.png">
+<img width="752" alt="image" src="https://user-images.githubusercontent.com/46469458/206385100-c783b356-19da-46a6-8d5b-dcaad44aefb8.png">
+<img width="697" alt="image" src="https://user-images.githubusercontent.com/46469458/206385603-78b9fe20-782d-4187-8b75-40100a51311e.png">
+<img width="813" alt="image" src="https://user-images.githubusercontent.com/46469458/206385321-2f06180b-438d-4793-b758-be281b6eced1.png">
+
+
+
+
