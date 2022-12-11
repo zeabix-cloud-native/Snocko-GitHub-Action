@@ -17,7 +17,7 @@ env:
   CIRCLE_API_TOKEN: '${{ secrets.CIRCLE_API_TOKEN }}'
   CIRCLECICONTEXTID: "b8a14bf5-4914-4e46-b0a6-e5abf21c944e"
   switch: ${{ inputs.switch }}
-  GH_TOKEN: ${{ secrets.CD_PAT }} 
+  GH_TOKEN: ${{ secrets.GH_CMD }} 
 
 jobs:
   
@@ -123,7 +123,7 @@ jobs:
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         shell: bash                              # Use bash shell
         env:                                     # Set environment variable
-         GH_TOKEN: ${{ secrets.CD_PAT }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -166,7 +166,7 @@ jobs:
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
         shell: bash                              # Use bash shell
         env:                                     # Set environment variable
-         GH_TOKEN: ${{ secrets.CD_PAT }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -208,7 +208,7 @@ jobs:
       - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
         shell: bash                                       # Use bash shell
         env:                                              # Set environment variable
-         GH_TOKEN: ${{ secrets.CD_PAT }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
+         GH_TOKEN: ${{ secrets.GH_CMD }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                            # Run command line
           file="repo.txt"
           while read -r line; do
