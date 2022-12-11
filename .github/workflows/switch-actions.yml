@@ -30,7 +30,6 @@ jobs:
         if: ${{ inputs.switch == 'githubactions'}}
         shell: bash                              # Use bash shell
         run: |
-          gh auth refresh -h github.com -s admin:org #temp 
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "githubactions"
       - name: Update CircleCI secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
@@ -102,7 +101,6 @@ jobs:
                --header 'content-type: application/json' \
                --data '{"value":"circleci"}'
   
-
   switch-actions:                   # Job name "switch-action"
     runs-on: ubuntu-latest                 # OS selection for run
     needs: check-inputs
