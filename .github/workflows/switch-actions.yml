@@ -104,6 +104,7 @@ jobs:
     runs-on: ubuntu-latest                 # OS selection for run
     needs: check-inputs
     steps:
+      - run: sleep 15
       - name: test CICD env
         id: cicd-env
         env: 
@@ -116,7 +117,6 @@ jobs:
         run: |                             # Run command line
           mkdir switch-actions
           cd switch-actions
-          sleep 10
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         shell: bash                              # Use bash shell
