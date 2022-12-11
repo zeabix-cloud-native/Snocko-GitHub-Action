@@ -24,7 +24,7 @@ jobs:
   check-inputs:
     runs-on: ubuntu-latest                 # OS selection for run
     env:                                     # Set environment variable
-      GH_TOKEN: ${{ secrets.GH_CMD }}
+      GH_TOKEN: ${{ github.token }}
     steps: 
       - name: Update Github actions secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
