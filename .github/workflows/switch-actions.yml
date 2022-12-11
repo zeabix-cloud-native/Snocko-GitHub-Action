@@ -23,14 +23,14 @@ jobs:
   
   check-inputs:
     runs-on: ubuntu-latest                 # OS selection for run
-    env:                                     # Set environment variable
-      GH_TOKEN: ${{ secrets.CD_PAT }}
+#    env:                                     # Set environment variable
+#      GH_TOKEN: ${{ secrets.CD_PAT }}
     steps: 
       - name: Update Github actions secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
         shell: bash                              # Use bash shell
         run: |
-          gh auth refresh -h github.com -s admin:org #temp
+          #gh auth refresh -h github.com -s admin:org #temp
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "githubactions"
       - name: Update CircleCI secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
@@ -68,7 +68,7 @@ jobs:
         if: ${{ inputs.switch == 'circleci'}}
         shell: bash                              # Use bash shell
         run: |
-          gh auth refresh -h github.com -s admin:org #temp
+          #gh auth refresh -h github.com -s admin:org #temp
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "circleci"
       - name: Update CircleCI secrets to "circleci"
         if: ${{ inputs.switch == 'circleci'}}
