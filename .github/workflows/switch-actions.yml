@@ -6,7 +6,7 @@ on:
         description: 'Enable github actions = update secrets to "githubactions both circleci and github actions"
                       Disable github actions = update secrets to "circleci both circleci and github actions"'
         required: true
-        default: 'circleci'
+        default: ''
         type: choice
         options:
         - circleci
