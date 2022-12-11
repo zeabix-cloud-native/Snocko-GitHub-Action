@@ -116,6 +116,7 @@ jobs:
         run: |                             # Run command line
           mkdir switch-actions
           cd switch-actions
+          sleep 10
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         shell: bash                              # Use bash shell
