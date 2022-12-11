@@ -67,7 +67,6 @@ jobs:
         if: ${{ inputs.switch == 'circleci'}}
         shell: bash                              # Use bash shell
         run: |
-          #gh auth refresh -h github.com -s admin:org #temp
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "circleci"
       - name: Update CircleCI secrets to "circleci"
         if: ${{ inputs.switch == 'circleci'}}
