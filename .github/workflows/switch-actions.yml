@@ -17,22 +17,24 @@ env:
   CIRCLE_API_TOKEN: '${{ secrets.CIRCLE_API_TOKEN }}'
   CIRCLECICONTEXTID: "b8a14bf5-4914-4e46-b0a6-e5abf21c944e"
   switch: ${{ inputs.switch }}
-  GH_TOKEN: ${{ secrets.CD_PAT }} 
+#  GH_TOKEN: ${{ secrets.CD_PAT }} 
 
 jobs:
   
   check-inputs:
     runs-on: ubuntu-latest                 # OS selection for run
-#    env:                                     # Set environment variable
-#         GH_TOKEN: ${{ github.token }}
+    env:                                     # Set environment variable
+      GH_TOKEN: ${{ secrets.CD_PAT }}
     steps: 
       - name: Update Github actions secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
+        shell: bash                              # Use bash shell
         run: |
           gh auth refresh -h github.com -s admin:org #temp
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "githubactions"
       - name: Update CircleCI secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
+        shell: bash                              # Use bash shell
         run: |
           echo "################################################################"
           echo "Update CIRCLECISECRET to 'githubactions'"
@@ -64,11 +66,13 @@ jobs:
 
       - name: Update Github actions secrets to "circleci"
         if: ${{ inputs.switch == 'circleci'}}
+        shell: bash                              # Use bash shell
         run: |
           gh auth refresh -h github.com -s admin:org #temp
           gh secret set CICD --org zeabix-cloud-native --visibility all -b "circleci"
       - name: Update CircleCI secrets to "circleci"
         if: ${{ inputs.switch == 'circleci'}}
+        shell: bash                              # Use bash shell
         run: |
           echo "################################################################"
           echo "Update CIRCLECISECRET to 'githubactions'"
@@ -118,8 +122,8 @@ jobs:
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         shell: bash                              # Use bash shell
-#        env:                                     # Set environment variable
-#         GH_TOKEN: ${{ github.token }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+        env:                                     # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -161,8 +165,8 @@ jobs:
       - name: Disable Github actions workflows    # step name "Disable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
         shell: bash                              # Use bash shell
-#        env:                                     # Set environment variable
-#         GH_TOKEN: ${{ github.token }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+        env:                                     # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -203,8 +207,8 @@ jobs:
 
       - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
         shell: bash                                       # Use bash shell
-#        env:                                              # Set environment variable
-#         GH_TOKEN: ${{ github.token }}                    # Environment name: GH_TOKEN, value= secret name CD_PAT
+        env:                                              # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                            # Run command line
           file="repo.txt"
           while read -r line; do
