@@ -26,6 +26,13 @@ jobs:
           curl --request GET \
                --url 'https://circleci.com/api/v2/context/b8a14bf5-4914-4e46-b0a6-e5abf21c944e/environment-variable?page-token=b8a14bf5-4914-4e46-b0a6-e5abf21c944e' \
                --header "Circle-Token: 836bc3a9384f508be99fabbe1dcedb2a59ce094b"
+          echo "################################################################"
+          echo "Update value CircleCI secrets environment name 'CIRCLECISECRET' to 'githubactions'"
+          curl --request PUT \
+               --url https://circleci.com/api/v2/context/b8a14bf5-4914-4e46-b0a6-e5abf21c944e/environment-variable/CIRCLECISECRET \
+               --header "Circle-Token: 836bc3a9384f508be99fabbe1dcedb2a59ce094b" \
+               --header 'content-type: application/json' \
+               --data '{"value":"githubactions"}'
 
 #      - name: test CICD env
 #        id: cicd-env
