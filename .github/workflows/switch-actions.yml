@@ -21,6 +21,11 @@ jobs:
           curl --request GET \
                --url 'https://circleci.com/api/v2/context?owner-id=b9220c3e-af27-45bc-827d-fc8cf20653a3&page-token=NEXT_PAGE_TOKEN' \
                --header "Circle-Token: 836bc3a9384f508be99fabbe1dcedb2a59ce094b"
+          echo "################################################################"
+          echo "Get CircleCI secrets environment"
+          curl --request GET \
+               --url 'https://circleci.com/api/v2/context/b8a14bf5-4914-4e46-b0a6-e5abf21c944e/environment-variable?page-token=b8a14bf5-4914-4e46-b0a6-e5abf21c944e' \
+               --header "Circle-Token: 836bc3a9384f508be99fabbe1dcedb2a59ce094b"
 
 #      - name: test CICD env
 #        id: cicd-env
