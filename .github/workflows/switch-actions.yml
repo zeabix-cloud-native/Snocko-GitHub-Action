@@ -17,14 +17,14 @@ env:
   CIRCLE_API_TOKEN: '${{ secrets.CIRCLE_API_TOKEN }}'
   CIRCLECICONTEXTID: "b8a14bf5-4914-4e46-b0a6-e5abf21c944e"
   switch: ${{ inputs.switch }}
-#  GH_TOKEN: ${{ secrets.GH_CMD }} 
+  GH_TOKEN: ${{ secrets.GH_CMD }} 
 
 jobs:
   
   check-inputs:
     runs-on: ubuntu-latest                 # OS selection for run
-    env:                                     # Set environment variable
-      GH_TOKEN: ${{ github.token }}
+#    env:                                     # Set environment variable
+#      GH_TOKEN: ${{ github.token }}
     steps: 
       - name: Update Github actions secrets to "githubactions"
         if: ${{ inputs.switch == 'githubactions'}}
