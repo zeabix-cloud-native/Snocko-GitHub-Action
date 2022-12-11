@@ -7,17 +7,16 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - run: echo ${BRANCH}
-      - run: echo ${CIRCLE_BRANCH}
+      - run: echo ${CIRCLECISECRET}
       - run:
           name: Check contexts environment name
           shell: /bin/bash
           command: |
-              if [[ $CIRCLE_BRANCH == $BRANCH ]]; then
-                   echo "Branch match --> go go go"
+              if [[ $CIRCLECISECRET == 'circleci' ]]; then
+                   echo "Switch context to circle"
                    exit 0
                  else 
-                   echo "Branch miss match --> STOP!!!"
+                   echo "Switch context to githubactions"
               fi
               exit 99
   # This is example jobs
@@ -36,6 +35,14 @@ workflows:
     jobs:
     # Add this job to all workflows
     - disable-enable:
+        filters:
+            branches:
+              only:
+              - develop
+              - main
+              - master
+              - release
+              - /hotfix.*/
         context:
           - DisableEnable
     - release:
