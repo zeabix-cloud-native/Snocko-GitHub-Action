@@ -116,7 +116,7 @@ jobs:
       - name: Check out                                     # step name "Check out" 
         uses: actions/checkout@v3                           # checkout repository
       - name: Create root directory                         # step name "Create root directory"
-        run: |                                              # Run command line
+        run: |                                              
           mkdir switch-actions                              
           cd switch-actions line                            
       - name: Enable Github actions workflows               # step name "Enable Github actions workflows"
