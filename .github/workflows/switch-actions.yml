@@ -6,7 +6,7 @@ on:
         description: 'Enable github actions = update secrets to "githubactions both circleci and github actions"
                       Disable github actions = update secrets to "circleci both circleci and github actions"'
         required: true
-        default: 'Please Select'
+        default: ''
         type: choice
         options:
         - circleci
@@ -105,7 +105,7 @@ jobs:
     needs: check-inputs
     steps:
       - run: sleep 20
-      - name: test CICD env
+      - name: Get CICD Secret environment variable
         id: cicd-env
         env: 
           CICD: ${{ secrets.CICD }}
