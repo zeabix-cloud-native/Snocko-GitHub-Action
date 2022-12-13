@@ -1,26 +1,25 @@
 on:
 
-  workflow_dispatch:                      # Run manaual workflows
+  workflow_dispatch:                                                  # Run manaual workflows
 
 env:
-  owner: "${{ github.repository_owner }}"  # Get owner name
+  owner: "${{ github.repository_owner }}"                             # Get owner name
+  GH_TOKEN: ${{ secrets.GH_CMD }}                                     # Github organization PAT
   
 jobs:
 
-  github-actions-status:                 # Job name "disable-github-actions"
-    runs-on: ubuntu-latest                # OS selection for run
+  github-actions-status:                                              # Job name "github-actions-status"
+    runs-on: ubuntu-latest                                            # OS selection for run
     steps:
-      - name: Check out                   # step name "Check out"
-        uses: actions/checkout@v3         # checkout repository
-      - name: Create root directory       # step name "Create root directory"
-        run: |                            # Run command line
+      - name: Check out                                               # step name "Check out"
+        uses: actions/checkout@v3                                     # checkout repository
+      - name: Create root directory                                   # step name "Create root directory"
+        run: |                                                        # Run command line
           mkdir github-actions-status
           cd github-actions-status
-      - name: Get Github actions workflows status             # step name "Get Github actions workflows status"
-        shell: bash                                           # Use bash shell
-        env:                                                  # Set environment variable
-         GH_TOKEN: ${{ secrets.CD_PAT }}                      # Environment name: GH_TOKEN, value= secret name CD_PAT
-        run: |                                                # Run command line
+      - name: Get Github actions workflows status                     # step name "Get Github actions workflows status"
+        shell: bash                                                   # Use bash shell
+        run: |                                                        # Run command line
           file="repo.txt"
           while read -r line; do
               cd $line
