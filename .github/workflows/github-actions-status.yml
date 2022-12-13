@@ -1,0 +1,46 @@
+on:
+
+  workflow_dispatch:                      # Run manaual workflows
+
+env:
+  owner: "${{ github.repository_owner }}"  # Get owner name
+  
+jobs:
+
+  github-actions-status:                 # Job name "disable-github-actions"
+    runs-on: ubuntu-latest                # OS selection for run
+    steps:
+      - name: Check out                   # step name "Check out"
+        uses: actions/checkout@v3         # checkout repository
+      - name: Create root directory       # step name "Create root directory"
+        run: |                            # Run command line
+          mkdir github-actions-status
+          cd github-actions-status
+      - name: Get Github actions workflows status             # step name "Get Github actions workflows status"
+        shell: bash                                           # Use bash shell
+        env:                                                  # Set environment variable
+         GH_TOKEN: ${{ secrets.CD_PAT }}                      # Environment name: GH_TOKEN, value= secret name CD_PAT
+        run: |                                                # Run command line
+          file="repo.txt"
+          while read -r line; do
+              cd $line
+              gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/$owner/$line/actions/workflows | jq '.workflows | .[].id' >> $line-StatusId.txt
+              echo "Get $line workflows status"
+              file=$line-StatusId.txt
+              while read -r STATUS; do
+                  echo ID=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.id') 
+                  echo NAME=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.name')
+                  echo STATUS=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.state')
+                   echo "----------------------------------------------------------------"
+              done <$file
+              echo "#################################################################"
+              cd .. 
+          done <$file
