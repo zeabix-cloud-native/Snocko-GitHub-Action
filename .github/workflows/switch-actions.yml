@@ -1,7 +1,7 @@
 on:
 
   workflow_dispatch:                                            # Run manaual workflows
-    inputs:
+    inputs:                                                     
       switch:
         description: 'Enable github actions = update secrets to "githubactions both circleci and github actions"
                       Disable github actions = update secrets to "circleci both circleci and github actions"'
@@ -18,23 +18,44 @@ env:
   CIRCLECICONTEXTID: "b8a14bf5-4914-4e46-b0a6-e5abf21c944e"     # Please replace with secret env variable
   switch: ${{ inputs.switch }}                                  # Get value of workflow_dispatch
   GH_TOKEN: ${{ secrets.GH_CMD }}                               # Github organization PAT
-  SECRET_NAME: "CICD"
-
+  SECRET_NAME: "CICD"                                           # Github secret name
 
 jobs:
   
   check-inputs:
     runs-on: ubuntu-latest                                      # OS selection for run
-#    env:                                                       # Set environment variable
-#      GH_TOKEN: ${{ github.token }}
     steps: 
       - name: Update Github actions secrets to "githubactions"  # Update Github secrets
         if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
         shell: bash                                             # Use bash shell
         run: |                                                  # Update github secrets value
-          gh secret set $SECRET_NAME --org $owner --visibility all -b "githubactions"  
+          gh secret set $SECRET_NAME \
+             --org $owner \
+             --visibility all -b "githubactions"  
       - name: Update CircleCI secrets to "githubactions"        # Update CircleCI secrets
         if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Update circleci secrets value
+          echo "################################################################"
+          echo "Update CIRCLECISECRET to 'githubactions'"
+          echo "################################################################"
+          echo "Install circleci commandline tools"
+          curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | bash
+          echo "################################################################"
+          echo "Update value CircleCI secrets environment name 'CIRCLECISECRET' to 'githubactions'"
+          curl --request PUT \
+               --url https://circleci.com/api/v2/context/$CIRCLECICONTEXTID/environment-variable/CIRCLECISECRET \
+               --header "Circle-Token: $CIRCLE_API_TOKEN" \
+               --header 'content-type: application/json' \
+               --data '{"value":"githubactions"}'
+
+      - name: Update Github actions secrets to "circleci"     
+        if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Update github secrets value
+          gh secret set $SECRET_NAME --org $owner --visibility all -b "circleci"
+      - name: Update CircleCI secrets to "circleci"
+        if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
         shell: bash                                             # Use bash shell
         run: |                                                  # Update circleci secrets value
           echo "################################################################"
@@ -63,69 +84,22 @@ jobs:
                --url https://circleci.com/api/v2/context/$CIRCLECICONTEXTID/environment-variable/CIRCLECISECRET \
                --header "Circle-Token: $CIRCLE_API_TOKEN" \
                --header 'content-type: application/json' \
-               --data '{"value":"githubactions"}'
-
-      - name: Update Github actions secrets to "circleci"     
-        if: ${{ inputs.switch == 'circleci'}}                 # Condition if input value = circleci
-        shell: bash                                           # Use bash shell
-        run: |                                                # Update github secrets value
-          gh secret set $SECRET_NAME --org $owner --visibility all -b "circleci"
-      - name: Update CircleCI secrets to "circleci"
-        if: ${{ inputs.switch == 'circleci'}}                 # Condition if input value = circleci
-        shell: bash                                           # Use bash shell
-        run: |                                                # Update circleci secrets value
-          echo "################################################################"
-          echo "Update CIRCLECISECRET to 'githubactions'"
-          echo "################################################################"
-          echo "Install circleci commandline tools"
-          curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | bash
-          echo "################################################################"
-          #echo "Prepare environment variable"
-          #echo "Get owner-id"
-          #echo "export CIRCLECIOWNERID=$(curl --request GET \
-          #     --url https://circleci.com/api/v2/me/collaborations \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN" | jq -r '.[0].id')"
-          #echo "Get CircleCI context-id"
-          #echo "export CIRCLECICONTEXTID=$(curl --request GET \
-          #     --url 'https://circleci.com/api/v2/context?owner-id='$CIRCLECIOWNERID'&page-token=NEXT_PAGE_TOKEN' \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN" | jq -r '.items[] | select(.name=="DisableEnable") | .id')"
-          #echo "################################################################"
-          #echo "Get CircleCI secrets environment"
-          #curl --request GET \
-          #     --url 'https://circleci.com/api/v2/context/'$CIRCLECICONTEXTID'/environment-variable?page-token='$CIRCLECICONTEXTID'' \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN"
-          #echo "################################################################"
-          echo "Update value CircleCI secrets environment name 'CIRCLECISECRET' to 'githubactions'"
-          curl --request PUT \
-               --url https://circleci.com/api/v2/context/$CIRCLECICONTEXTID/environment-variable/CIRCLECISECRET \
-               --header "Circle-Token: $CIRCLE_API_TOKEN" \
-               --header 'content-type: application/json' \
                --data '{"value":"circleci"}'
   
-  switch-actions:                                           # Job name "switch-action"
-    runs-on: ubuntu-latest                                  # OS selection for run
+  switch-actions:                                               # Job name "switch-action"
+    runs-on: ubuntu-latest                                      # OS selection for run
     needs: check-inputs
     steps:
-  #    - run: sleep 20
-  #    - name: Get CICD Secret environment variable
-  #      id: cicd-env
-  #      env: 
-  #        CICD: ${{ secrets.CICD }}
-  #      run: |
-  #        echo "cicd-secrets=$CICD" >> $GITHUB_OUTPUT      
-      - name: Check out                                     # step name "Check out" 
-        uses: actions/checkout@v3                           # checkout repository
-      - name: Create root directory                         # step name "Create root directory"
-        run: |                                              # Run command line
-          mkdir switch-actions                              # Create directory name switch-actions
-          cd switch-actions                                 # Change directory to switch-actions
-      - name: Enable Github actions workflows               # step name "Enable Github actions workflows"
-#        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
+      - name: Check out                                         # step name "Check out" 
+        uses: actions/checkout@v3                               # checkout repository
+      - name: Create root directory                             # step name "Create root directory"
+        run: |                                                  # Run command line
+          mkdir switch-actions                                  # Create directory name switch-actions
+          cd switch-actions                                     # Change directory to switch-actions
+      - name: Enable Github actions workflows                   # step name "Enable Github actions workflows"
         if: ${{ inputs.switch == 'githubactions'}}
-        shell: bash                                         # Use bash shell
-#        env:                                               # Set environment variable
-#         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
-        run: |                                              # Run command line
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Run command line
           file="repo.txt"
           while read -r line; do
               echo "Processing repository $line"
@@ -163,13 +137,10 @@ jobs:
               cd .. 
           done <$file
 
-      - name: Disable Github actions workflows    # step name "Disable Github actions workflows"
-#        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
+      - name: Disable Github actions workflows                  # step name "Disable Github actions workflows"
         if: ${{ inputs.switch == 'circleci'}}
-        shell: bash                              # Use bash shell
-#        env:                                     # Set environment variable
-#         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
-        run: |                                   # Run command line
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Run command line
           file="repo.txt"
           while read -r line; do
               echo "Processing repository $line"
@@ -207,11 +178,9 @@ jobs:
               cd .. 
           done <$file
 
-      - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
-        shell: bash                                       # Use bash shell
-#        env:                                              # Set environment variable
-#         GH_TOKEN: ${{ secrets.GH_CMD }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
-        run: |                                            # Run command line
+      - name: Get Github actions workflows status               # step name "Get Github actions workflows status"
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Run command line
           file="repo.txt"
           while read -r line; do
               cd $line
