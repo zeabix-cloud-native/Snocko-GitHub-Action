@@ -117,8 +117,8 @@ jobs:
         uses: actions/checkout@v3                           # checkout repository
       - name: Create root directory                         # step name "Create root directory"
         run: |                                              # Run command line
-          mkdir switch-actions                              # Create directory name switch-actions
-          cd switch-actions line                            # Change directory to switch-actions
+          mkdir switch-actions                              
+          cd switch-actions line                            
       - name: Enable Github actions workflows               # step name "Enable Github actions workflows"
 #        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         if: ${{ inputs.switch == 'githubactions'}}
