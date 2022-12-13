@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest                 # OS selection for run
     needs: check-inputs
     steps:
-      - run: sleep 15
+      - run: sleep 20
       - name: test CICD env
         id: cicd-env
         env: 
