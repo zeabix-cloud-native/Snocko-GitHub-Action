@@ -25,7 +25,7 @@ jobs:
   check-inputs:
     runs-on: ubuntu-latest                                      # OS selection for run
     steps: 
-      - name: Update Github actions secrets to "githubactions"  # Update Github secrets
+      - name: Update Github actions CICD secrets value to "githubactions"  # Update Github secrets
         if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
         shell: bash                                             # Use bash shell
         run: |                                                  # Update github secrets value
@@ -49,11 +49,13 @@ jobs:
                --header 'content-type: application/json' \
                --data '{"value":"githubactions"}'
 
-      - name: Update Github actions secrets to "circleci"     
+      - name: Update Github actions CICD secrets value to "circleci"     
         if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
         shell: bash                                             # Use bash shell
         run: |                                                  # Update github secrets value
-          gh secret set $SECRET_NAME --org $owner --visibility all -b "circleci"
+          gh secret set $SECRET_NAME \
+          --org $owner \
+          --visibility all -b "circleci"
       - name: Update CircleCI secrets to "circleci"
         if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
         shell: bash                                             # Use bash shell
