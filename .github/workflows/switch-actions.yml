@@ -118,7 +118,8 @@ jobs:
           mkdir switch-actions
           cd switch-actions
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
-        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
+#        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
+        if: ${{ inputs.switch == 'githubactions'}}
         shell: bash                              # Use bash shell
 #        env:                                     # Set environment variable
 #         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
@@ -161,7 +162,8 @@ jobs:
           done <$file
 
       - name: Disable Github actions workflows    # step name "Disable Github actions workflows"
-        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
+#        if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
+        if: ${{ inputs.switch == 'circleci'}}
         shell: bash                              # Use bash shell
 #        env:                                     # Set environment variable
 #         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
