@@ -120,8 +120,8 @@ jobs:
       - name: Enable Github actions workflows    # step name "Enable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'githubactions' }}  # Conditional
         shell: bash                              # Use bash shell
-        env:                                     # Set environment variable
-         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+#        env:                                     # Set environment variable
+#         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -163,8 +163,8 @@ jobs:
       - name: Disable Github actions workflows    # step name "Disable Github actions workflows"
         if: ${{ steps.cicd-env.outputs.cicd-secrets == 'circleci' }}
         shell: bash                              # Use bash shell
-        env:                                     # Set environment variable
-         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
+#        env:                                     # Set environment variable
+#         GH_TOKEN: ${{ secrets.GH_CMD }}           # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                   # Run command line
           file="repo.txt"
           while read -r line; do
@@ -205,8 +205,8 @@ jobs:
 
       - name: Get Github actions workflows status         # step name "Get Github actions workflows status"
         shell: bash                                       # Use bash shell
-        env:                                              # Set environment variable
-         GH_TOKEN: ${{ secrets.GH_CMD }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
+#        env:                                              # Set environment variable
+#         GH_TOKEN: ${{ secrets.GH_CMD }}                   # Environment name: GH_TOKEN, value= secret name CD_PAT
         run: |                                            # Run command line
           file="repo.txt"
           while read -r line; do
