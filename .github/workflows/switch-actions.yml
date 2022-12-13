@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest                 # OS selection for run
     needs: check-inputs
     steps:
-      - run: sleep 20
+  #    - run: sleep 20
       - name: Get CICD Secret environment variable
         id: cicd-env
         env: 
