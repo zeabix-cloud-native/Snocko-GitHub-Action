@@ -97,7 +97,7 @@ jobs:
           mkdir switch-actions                                  # Create directory name switch-actions
           cd switch-actions                                     # Change directory to switch-actions
       - name: Enable Github actions workflows                   # step name "Enable Github actions workflows"
-        if: ${{ inputs.switch == 'githubactions'}}
+        if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
         shell: bash                                             # Use bash shell
         run: |                                                  # Run command line
           file="repo.txt"
@@ -138,7 +138,7 @@ jobs:
           done <$file
 
       - name: Disable Github actions workflows                  # step name "Disable Github actions workflows"
-        if: ${{ inputs.switch == 'circleci'}}
+        if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
         shell: bash                                             # Use bash shell
         run: |                                                  # Run command line
           file="repo.txt"
