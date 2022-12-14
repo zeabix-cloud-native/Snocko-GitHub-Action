@@ -64,10 +64,19 @@ Reference : https://circleci.com/docs/managing-api-tokens/#creating-a-personal-a
 
 To prepare your context id please follow up this step
 
-1. Go to Organization settings --> Contexts --> Click contexts name `  `
+1. Go to Organization settings --> Contexts --> Click contexts name ` DisableEnable `
 
 <img width="1404" alt="image" src="https://user-images.githubusercontent.com/46469458/207620178-b70f1e13-bb87-4449-8833-3b9248728977.png">
 
+2. At URL please copy value 
+
+Ex. https:// app.circleci. com/settings/organization/github/`{Your organization name}`/contexts/`b8a14bf5-4914-4e46-b0a6-e5abf21c944e`?return-to=https%3A%2F%2Fapp.circleci.com%2Fpipelines%2Fgithub%2F`{Your organization name}`
+
+b8a14bf5-4914-4e46-b0a6-e5abf21c944e = context id
+
+<img width="1391" alt="image" src="https://user-images.githubusercontent.com/46469458/207622028-08d8959a-d7f5-4921-8445-b2c0bd8edfeb.png">
+
+3. Create github actions organization secret name : ` CIRCLECICONTEXTID ` and paste value from above
 
 ---
 ## switch-actions.yml
