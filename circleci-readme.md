@@ -1,11 +1,13 @@
 # Readme for Disable or Enable CircleCI Workflows
-1. Create organization contexts environment variable 
+1. Create organization contexts variable 
 
-  Name  = ` BRANCH `
+  Contexts name = ` DisableEnable ` 
+
+  Environment Variables Name  = ` CIRCLECISECRET `
   
-  Value = ` main ` for **Enable workflows** (If github repository branch = main)
+  Value = ` circleci ` for **Enable workflows** 
           
-  Value = ` {any words or string} ` for **Disable workflows**
+  Value = ` githubactions ` for **Disable workflows**
 
 2. Insert this job to first job
 
@@ -15,17 +17,16 @@
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - run: echo ${BRANCH}         # Optional
-      - run: echo ${CIRCLE_BRANCH}  # Optional
+      - run: echo ${CIRCLECISECRET}         # Optional
       - run:
           name: Check contexts environment name
           shell: /bin/bash
           command: |
-              if [[ $CIRCLE_BRANCH == $BRANCH ]]; then
-                   echo "Branch match --> go go go"
+              if [[ ${CIRCLECISECRET} == 'circleci' ]]; then
+                   echo "Switch context to circle"
                    exit 0
                  else 
-                   echo "Branch missmatch --> STOP!!!"
+                   echo "Switch context to githubactions"
               fi
               exit 99
 ```
