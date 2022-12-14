@@ -83,3 +83,16 @@ b8a14bf5-4914-4e46-b0a6-e5abf21c944e = context id
 
 Run this workflow to enable or disabel both github actions and circleci
 
+<img width="1481" alt="image" src="https://user-images.githubusercontent.com/46469458/207625737-1a00b814-a08f-4e6f-aa1d-2c568be1cf4c.png">
+
+<img width="837" alt="image" src="https://user-images.githubusercontent.com/46469458/207625935-11458bfc-258b-4154-966e-5754fcc1dd1e.png">
+<img width="744" alt="image" src="https://user-images.githubusercontent.com/46469458/207626032-c8c285b3-28a5-4ed3-b9a6-2dd0d9950b46.png">
+<img width="841" alt="image" src="https://user-images.githubusercontent.com/46469458/207626294-c2e865f5-ae1f-4c88-828b-cce36184f10d.png">
+<img width="805" alt="image" src="https://user-images.githubusercontent.com/46469458/207626895-9e38f367-7cdd-4f3a-8e74-32938727e740.png">
+<img width="779" alt="image" src="https://user-images.githubusercontent.com/46469458/207627005-b58123c7-ead7-4a44-9359-dcf5662f5d6b.png">
+<img width="896" alt="image" src="https://user-images.githubusercontent.com/46469458/207627162-c9b2ad69-b203-4393-82d8-aa52f2261038.png">
+<img width="634" alt="image" src="https://user-images.githubusercontent.com/46469458/207627257-004bad9c-ce7a-4e54-960a-2e4aed566537.png">
+<img width="821" alt="image" src="https://user-images.githubusercontent.com/46469458/207627756-c1985805-19fa-4347-b2f8-9917cfc08b3a.png">
+<img width="656" alt="image" src="https://user-images.githubusercontent.com/46469458/207627853-ca914fe7-32bb-4e6a-9352-628a5c33f1a6.png">
+<img width="838" alt="image" src="https://user-images.githubusercontent.com/46469458/207627950-31c0b439-b25d-4a18-afa9-f72c38932c25.png">
+
