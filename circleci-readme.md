@@ -1,7 +1,9 @@
 # Readme for Disable or Enable CircleCI Workflows
-1. Create organization contexts environment variable 
+1. Create organization contexts variable 
 
-  Name  = ` CIRCLECISECRET `
+  Contexts name = ` DisableEnable ` 
+
+  Environment Variables Name  = ` CIRCLECISECRET `
   
   Value = ` circleci ` for **Enable workflows** 
           
