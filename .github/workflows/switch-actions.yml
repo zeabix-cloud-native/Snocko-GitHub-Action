@@ -15,7 +15,7 @@ on:
 env:
   owner: "${{ github.repository_owner }}"                       # Get owner name
   CIRCLE_API_TOKEN: '${{ secrets.CIRCLE_API_TOKEN }}'           # Circle API token
-  CIRCLECICONTEXTID: "b8a14bf5-4914-4e46-b0a6-e5abf21c944e"     # Please replace with secret env variable
+  CIRCLECICONTEXTID: '${{ secrets.CIRCLECICONTEXTID }}'         # CIRCLECICONTEXTID secret variable
   switch: ${{ inputs.switch }}                                  # Get value of workflow_dispatch
   GH_TOKEN: ${{ secrets.GH_CMD }}                               # Github organization PAT
   SECRET_NAME: "CICD"                                           # Github secret name
