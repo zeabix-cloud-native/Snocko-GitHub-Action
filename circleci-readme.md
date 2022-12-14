@@ -7,7 +7,7 @@
   
   Value = ` circleci ` for **Enable workflows** 
           
-  Value = ` {any words or string} ` for **Disable workflows**
+  Value = ` githubactions ` for **Disable workflows**
 
 2. Insert this job to first job
 
