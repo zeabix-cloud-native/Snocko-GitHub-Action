@@ -61,26 +61,11 @@ jobs:
         shell: bash                                             # Use bash shell
         run: |                                                  # Update circleci secrets value
           echo "################################################################"
-          echo "Update CIRCLECISECRET to 'githubactions'"
+          echo "Update CIRCLECISECRET to 'circleci'"
           echo "################################################################"
           echo "Install circleci commandline tools"
           curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | bash
           echo "################################################################"
-          #echo "Prepare environment variable"
-          #echo "Get owner-id"
-          #echo "export CIRCLECIOWNERID=$(curl --request GET \
-          #     --url https://circleci.com/api/v2/me/collaborations \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN" | jq -r '.[0].id')"
-          #echo "Get CircleCI context-id"
-          #echo "export CIRCLECICONTEXTID=$(curl --request GET \
-          #     --url 'https://circleci.com/api/v2/context?owner-id='$CIRCLECIOWNERID'&page-token=NEXT_PAGE_TOKEN' \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN" | jq -r '.items[] | select(.name=="DisableEnable") | .id')"
-          #echo "################################################################"
-          #echo "Get CircleCI secrets environment"
-          #curl --request GET \
-          #     --url 'https://circleci.com/api/v2/context/'$CIRCLECICONTEXTID'/environment-variable?page-token='$CIRCLECICONTEXTID'' \
-          #     --header "Circle-Token: $CIRCLE_API_TOKEN"
-          #echo "################################################################"
           echo "Update value CircleCI secrets environment name 'CIRCLECISECRET' to 'githubactions'"
           curl --request PUT \
                --url https://circleci.com/api/v2/context/$CIRCLECICONTEXTID/environment-variable/CIRCLECISECRET \
