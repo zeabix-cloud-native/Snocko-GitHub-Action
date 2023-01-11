@@ -6,7 +6,7 @@ orbs:
 jobs:
   
   # Add this job to all workflows
-  disable-enable:
+  circleci:
     docker:
       - image: 'cimg/node:lts'
     steps:
@@ -19,22 +19,45 @@ jobs:
           dir: ./Snocko-GitHub-Action
           repo: https://github.com/zeabix-cloud-native/Snocko-GitHub-Action.git
       - run:
-          name: check file
-          command: |
-            ls -lah ./Snocko-GitHub-Action 
-      - run:
-          name: Check provider value
+          name: check duplicate repository
           shell: /bin/bash
           command: |
-              export PROVIDERVALUE=$(cat ./Snocko-GitHub-Action/provider.yaml| yq '.provider')
-              echo Current Provicer = $PROVIDERVALUE
-              if [[ $PROVIDERVALUE == 'circleci' ]]; then
-                   echo "Switch context to circle"
-                   exit 0
-                 else 
-                   echo "Switch context to githubactions"
-              fi
-              exit 99
+            yq '.repositories.provider.github-actions[]' ./Snocko-GitHub-Action/repositories.yaml > github-actions-repositories.yaml
+            yq '.repositories.provider.circleci[]' ./Snocko-GitHub-Action/repositories.yaml > circleci-repositories.yaml
+            #ls -lah
+            echo -------------------------------- Repositories are run on CircleCI --------------------------------
+            cat github-actions-repositories.yaml
+            echo -------------------------------- Repositories are run on Actions --------------------------------
+            cat circleci-repositories.yaml
+      - run:
+          name: Compare repositories
+          shell: /bin/bash
+          command: |
+            export compare=$(grep -F -f circleci-repositories.yaml github-actions-repositories.yaml)
+            if [[ -z $compare ]]; then
+              echo "Repositories are not duplicated"
+              exit 0
+            else
+              echo "Repositories are duplicated"
+              exit 1
+            fi
+      - run: 
+          name: check repository
+          shell: /bin/bash
+          command: |
+            #cat circleci-repositories.yaml
+            #echo ${CIRCLE_PROJECT_REPONAME}
+            file="circleci-repositories.yaml"
+            while IFS= read -r line; do
+                  if [[ $line == ${CIRCLE_PROJECT_REPONAME} ]] ; then
+                    echo "circleci repository match"
+                    exit 0
+                  else
+                     echo "circleci repository does not match"
+                  fi
+            done <$file
+            exit 1
+
   # This is example jobs
   release:
     docker:
@@ -51,7 +74,7 @@ workflows:
     jobs:
 
     # Add this job to all workflows
-    - disable-enable
+    - circleci
 #        filters:
 #            branches:
 #              only:
@@ -64,7 +87,7 @@ workflows:
 #          - DisableEnable
     - release:
         requires:
-          - "disable-enable" # Add this requires jobs to all workflows
+          - "circleci" # Add this requires jobs to all workflows
 
 
 # VS Code Extension Version: 1.5.0

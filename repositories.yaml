@@ -1,10 +1,10 @@
 repositories:
   provider:
     circleci:
-      - test1
-      - test2
+      - test-switch-4
+      - test-switch-3
       - switch
     github-actions:
-      - test3
-      - test4
+      - test-switch-2
+      - test-switch-1
       - switch

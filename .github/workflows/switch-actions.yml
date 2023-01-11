@@ -1,21 +1,9 @@
-name: dast scan workflow
+name: Switch workflow
 
 on:
   push:
     branches:
       - main
-
-#  workflow_dispatch:                                            # Run manaual workflows
-#    inputs:                                                     
-#      switch:
-#        description: 'Enable github actions = update secrets to "githubactions both circleci and github actions"
-#                      Disable github actions = update secrets to "circleci both circleci and github actions"'
-#        required: true
-#        default: ''
-#        type: choice
-#        options:
-#        - circleci
-#        - githubactions
 
 env:
   owner: "${{ github.repository_owner }}"                       # Get owner name
@@ -27,44 +15,211 @@ env:
 
 jobs:
   
-  check-provider:
-    runs-on: ubuntu-latest                                      # OS selection for run
-    outputs:
-      provider: ${{ steps.providervalue.outputs.PROVIDERVALUE }}
-    steps: 
-      - name: Check out                                         # step name "Check out" 
-        uses: actions/checkout@v3                               # checkout repository
-      - name: Check provider value
-        shell: bash                                             # Use bash shell
-        id: providervalue
-        run: |
-          export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')
-          echo "PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
-          echo Current Provicer = $PROVIDERVALUE
-      
-  change-to-circleci:
-    runs-on: ubuntu-latest
-    needs: check-provider
-    if: ${{needs.check-provider.outputs.provider == 'circleci' }} 
-    steps:
-      - name: check status
-        shell: bash                                             # Use bash shell
-        run: |
-          echo ${{needs.check-provider.outputs.provider}}
-
-  change-to-githubactions:
-    runs-on: ubuntu-latest
-    needs: check-provider
-    if: ${{needs.check-provider.outputs.provider == 'githubactions' }} 
-    steps:
-      - name: check status
-        shell: bash                                             # Use bash shell
-        run: |
-          echo ${{needs.check-provider.outputs.provider}}
+#  check-provider:
+#    runs-on: ubuntu-latest                                      # OS selection for run
+#    outputs:
+#      provider: ${{ steps.providervalue.outputs.PROVIDERVALUE }}
+#    steps: 
+#      - name: Check out                                         # step name "Check out" 
+#        uses: actions/checkout@v3                               # checkout repository
+#      - name: Check provider value
+#        shell: bash                                             # Use bash shell
+#        id: providervalue
+#        run: |
+#          export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')
+#          echo "PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
+#          echo Current Provicer = $PROVIDERVALUE
+#      
+#  change-to-circleci:
+#    runs-on: ubuntu-latest
+#    needs: check-provider
+#    if: ${{needs.check-provider.outputs.provider == 'circleci' }} 
+#    steps:
+#      - name: check status
+#        shell: bash                                             # Use bash shell
+#        run: |
+#          echo ${{needs.check-provider.outputs.provider}}
+#
+#  change-to-githubactions:
+#    runs-on: ubuntu-latest
+#    needs: check-provider
+#    if: ${{needs.check-provider.outputs.provider == 'githubactions' }} 
+#    steps:
+#      - name: check status
+#        shell: bash                                             # Use bash shell
+#        run: |
+#          echo ${{needs.check-provider.outputs.provider}}
   
+  githubactions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Check duplicate repositories
+        shell: bash
+        run: |
+          yq '.repositories.provider.github-actions[]' repositories.yaml > github-actions-repositories.yaml
+          yq '.repositories.provider.circleci[]' repositories.yaml > circleci-repositories.yaml
+          #ls -lah
+          echo -------------------------------- Repositories are run on CircleCI --------------------------------
+          cat github-actions-repositories.yaml
+          echo -------------------------------- Repositories are run on Actions --------------------------------
+          cat circleci-repositories.yaml
+      - name: Compare repositories
+        shell: bash
+        run: |
+          export compare=$(grep -F -f circleci-repositories.yaml github-actions-repositories.yaml)
+          if [[ -z $compare ]]; then
+            echo "Repositories are not duplicated"
+            exit 0
+          else
+            echo "Repositories are duplicated"
+            exit 1
+          fi
+      - name: check repository
+        shell: bash
+        run: |
+          file="github-actions-repositories.yaml"
+          while IFS= read -r line; do
+                if [[ $line == ${{ github.event.repository.name }} ]] ; then
+                  echo "Actions repository match"
+                  mkdir switch-actions
+                  cd switch-actions
+                  while read -r repo; do
+                      echo "Processing repository $line"
+                      mkdir "$repo"
+                      cd $repo
+                      echo "echo Get workflows id"
+                      gh api \
+                      -H "Accept: application/vnd.github+json" \
+                      /repos/$owner/$repo/actions/workflows | jq '.workflows | .[].id' >> $repo-WorkflowId.txt
+                      echo "################################################################"
+                      echo "echo file $repo-WorkflowId before insert string"
+                      cat $repo-WorkflowId.txt
+                      echo "################################################################"
+                      echo "/repos/$owner/$repo/actions/workflows/" >> $repo-WorkflowPath.txt
+                      echo "echo file $repo-WorkflowPath.txt"
+                      cat $repo-WorkflowPath.txt
+                      echo "################################################################"
+                      ## replace workflow id
+                      sed -ie 's/^/\/repos\/'$owner'\/'$repo'\/actions\/workflows\//' $repo-WorkflowId.txt
+                      sed -ie 's/$/\/enable/' $repo-WorkflowId.txt
+                      echo "echo file $repo-WorkflowId after insert string"
+                      cat $repo-WorkflowId.txt
+                      echo "################################################################"
+                      echo "Enabling $repo workflows"
+                      file=$repo-WorkflowId.txt
+                      while read -r ID; do
+                          gh api \
+                           --method PUT \
+                           -H "Accept: application/vnd.github+json" \
+                           $ID
+                      done <$file
+                      echo "################################################################"
+                      echo "Enabled $line workflows"
+                      echo "################################################################"
+                      cd .. 
+                  done <$file
+                  exit 0
+                else
+                  echo "Actions repository does not match"
+                  file="circleci-repositories.yaml"
+                  while read -r circle; do
+                      echo "Processing repository $line"
+                      mkdir "$circle"
+                      cd $circle
+                      echo "echo Get workflows id"
+                      gh api \
+                      -H "Accept: application/vnd.github+json" \
+                      /repos/$owner/$circle/actions/workflows | jq '.workflows | .[].id' >> $circle-WorkflowId.txt
+                      echo "################################################################"
+                      echo "echo file $circle-WorkflowId before insert string"
+                      cat $circle-WorkflowId.txt
+                      echo "################################################################"
+                      echo "/repos/$owner/$circle/actions/workflows/" >> $circle-WorkflowPath.txt
+                      echo "echo file $circle-WorkflowPath.txt"
+                      cat $circle-WorkflowPath.txt
+                      echo "################################################################"
+                      ## replace workflow id
+                      sed -ie 's/^/\/repos\/'$owner'\/'$circle'\/actions\/workflows\//' $circle-WorkflowId.txt
+                      sed -ie 's/$/\/disable/' $circle-WorkflowId.txt
+                      echo "echo file $circle-WorkflowId after insert string"
+                      cat $circle-WorkflowId.txt
+                      echo "################################################################"
+                      echo "Disabling $circle workflows"
+                      file=$circle-WorkflowId.txt
+                      while read -r IDis; do
+                          gh api \
+                           --method PUT \
+                           -H "Accept: application/vnd.github+json" \
+                           $IDis
+                      done <$file
+                      echo "################################################################"
+                      echo "Disabled $line workflows"
+                      echo "################################################################"
+                      cd .. 
+                  done <$file
+                  exit 0
+                fi
+          done <$file
+#          exit 1
+      - name: Get enable Github actions workflows                # step name "Get Github actions workflows status"
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Run command line
+          file="github-actions-repositories.yaml"
+          while read -r line; do
+              cd $line
+              gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/$owner/$line/actions/workflows | jq '.workflows | .[].id' >> $line-StatusId.txt
+              echo "Get $line workflows status"
+              file=$line-StatusId.txt
+              while read -r STATUS; do
+                  echo ID=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.id') 
+                  echo NAME=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.name')
+                  echo STATUS=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.state')
+                   echo "----------------------------------------------------------------"
+              done <$file
+              echo "#################################################################"
+              cd .. 
+          done <$file 
+      
+      - name: Get Disable Github actions workflows status               # step name "Get Github actions workflows status"
+        shell: bash                                             # Use bash shell
+        run: |                                                  # Run command line
+          file="circleci-repositories.yaml"
+          while read -r line; do
+              cd $line
+              gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/$owner/$line/actions/workflows | jq '.workflows | .[].id' >> $line-StatusId.txt
+              echo "Get $line workflows status"
+              file=$line-StatusId.txt
+              while read -r STATUS; do
+                  echo ID=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.id') 
+                  echo NAME=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.name')
+                  echo STATUS=$(gh api \
+                  -H "Accept: application/vnd.github+json" \
+                   /repos/$owner/$line/actions/workflows/$STATUS | jq '.state')
+                   echo "----------------------------------------------------------------"
+              done <$file
+              echo "#################################################################"
+              cd .. 
+          done <$file 
+ 
 #  switch-actions:                                               # Job name "switch-action"
 #    runs-on: ubuntu-latest                                      # OS selection for run
-#    needs: check-inputs
+#    needs: githubactions
 #    steps:
 #      - name: Check out                                         # step name "Check out" 
 #        uses: actions/checkout@v3                               # checkout repository
@@ -73,10 +228,10 @@ jobs:
 #          mkdir switch-actions                                  # Create directory name switch-actions
 #          cd switch-actions                                     # Change directory to switch-actions
 #      - name: Enable Github actions workflows                   # step name "Enable Github actions workflows"
-#        if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
+##        if: ${{ inputs.switch == 'githubactions'}}              # Condition if input value = githubactions
 #        shell: bash                                             # Use bash shell
 #        run: |                                                  # Run command line
-#          file="repo.txt"
+#          file="github-actions-repositories.yaml"
 #          while read -r line; do
 #              echo "Processing repository $line"
 #              mkdir "$line"
@@ -114,10 +269,10 @@ jobs:
 #          done <$file
 #
 #      - name: Disable Github actions workflows                  # step name "Disable Github actions workflows"
-#        if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
+##        if: ${{ inputs.switch == 'circleci'}}                   # Condition if input value = circleci
 #        shell: bash                                             # Use bash shell
 #        run: |                                                  # Run command line
-#          file="repo.txt"
+#          file="github-actions-repositories.yaml"
 #          while read -r line; do
 #              echo "Processing repository $line"
 #              mkdir "$line"
@@ -157,7 +312,7 @@ jobs:
 #      - name: Get Github actions workflows status               # step name "Get Github actions workflows status"
 #        shell: bash                                             # Use bash shell
 #        run: |                                                  # Run command line
-#          file="repo.txt"
+#          file="github-actions-repositories.yaml"
 #          while read -r line; do
 #              cd $line
 #              gh api \
