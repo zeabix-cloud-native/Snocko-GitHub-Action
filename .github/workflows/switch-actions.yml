@@ -39,7 +39,7 @@ jobs:
         id: providervalue
         run: |
           export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')
-          echo "export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
+          echo "PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
           echo Current Provicer = $PROVIDERVALUE
       
   change-to-circleci:
