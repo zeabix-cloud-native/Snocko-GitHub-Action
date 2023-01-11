@@ -3,8 +3,9 @@ repositories:
     circleci:
       - test-switch-4
       - test-switch-3
-
-    github-actions:
       - test-switch-2
       - test-switch-1
+
+    github-actions:
+      - switch
 
