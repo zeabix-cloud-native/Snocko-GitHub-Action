@@ -19,7 +19,7 @@ jobs:
           dir: ./Snocko-GitHub-Action
           repo: https://github.com/zeabix-cloud-native/Snocko-GitHub-Action.git
       - run:
-          name: check duplicate repository
+          name: Separate repositories
           shell: /bin/bash
           command: |
             yq '.repositories.provider.github-actions[]' ./Snocko-GitHub-Action/repositories.yaml > github-actions-repositories.yaml
@@ -30,7 +30,7 @@ jobs:
             echo -------------------------------- Repositories are run on Actions --------------------------------
             cat circleci-repositories.yaml
       - run:
-          name: Compare repositories
+          name: Check duplicates
           shell: /bin/bash
           command: |
             export compare=$(grep -F -f circleci-repositories.yaml github-actions-repositories.yaml)
