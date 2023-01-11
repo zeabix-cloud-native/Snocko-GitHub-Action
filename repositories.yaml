@@ -7,3 +7,4 @@ repositories:
     github-actions:
       - test3
       - test4
+      - switch
