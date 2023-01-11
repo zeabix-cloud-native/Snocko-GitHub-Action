@@ -38,6 +38,7 @@ jobs:
         shell: bash                                             # Use bash shell
         id: providervalue
         run: |
+          export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')
           echo "export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
           #echo "$PROVIDERVALUE" >> $GITHUB_OUTPUT
           echo Current Provicer = $PROVIDERVALUE
@@ -47,7 +48,7 @@ jobs:
     needs: check-provider
     steps:
       - name: check status
-        if: ${{needs.check-provider.outputs.provider == 'circleci'}}
+        if: ${{needs.check-provider.outputs.provider = 'circleci'}}
         shell: bash                                             # Use bash shell
         run: |
           echo ${{needs.check-provider.outputs.provider}}
