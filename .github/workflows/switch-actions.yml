@@ -62,9 +62,9 @@ jobs:
           yq '.repositories.provider.circleci[]' repositories.yaml > circleci-repositories.yaml
           #ls -lah
           echo -------------------------------- Repositories are run on CircleCI --------------------------------
-          cat github-actions-repositories.yaml
+          cat circleci-repositories.yaml 
           echo -------------------------------- Repositories are run on Actions --------------------------------
-          cat circleci-repositories.yaml
+          cat github-actions-repositories.yaml
       - name: Compare repositories
         shell: bash
         run: |
