@@ -3,6 +3,7 @@ repositories:
     circleci:
       - test1
       - test2
+      - switch
     github-actions:
       - test3
       - test4
