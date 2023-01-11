@@ -40,15 +40,14 @@ jobs:
         run: |
           export PROVIDERVALUE=$(cat provider.yaml| yq '.provider')
           echo "PROVIDERVALUE=$(cat provider.yaml| yq '.provider')" >> $GITHUB_OUTPUT
-          #echo "$PROVIDERVALUE" >> $GITHUB_OUTPUT
           echo Current Provicer = $PROVIDERVALUE
       
   change-to-circleci:
     runs-on: ubuntu-latest
     needs: check-provider
+    if: ${{needs.check-provider.outputs.provider == 'circleci' }} 
     steps:
       - name: check status
-#        if: ${{needs.check-provider.outputs.provider}} == 'circleci'
         shell: bash                                             # Use bash shell
         run: |
           echo ${{needs.check-provider.outputs.provider}}
@@ -56,9 +55,9 @@ jobs:
   change-to-githubactions:
     runs-on: ubuntu-latest
     needs: check-provider
+    if: ${{needs.check-provider.outputs.provider == 'githubactions' }} 
     steps:
       - name: check status
-#        if: ${{needs.check-provider.outputs.provider}} == 'githubactions'
         shell: bash                                             # Use bash shell
         run: |
           echo ${{needs.check-provider.outputs.provider}}
