@@ -73,7 +73,7 @@ jobs:
             echo "Repositories are not duplicated"
             exit 0
           else
-            echo "Repositories are duplicated"
+            echo "Repositories are duplicated or not found"
             exit 1
           fi
       - name: check repository
