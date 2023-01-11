@@ -7,4 +7,4 @@ repositories:
     github-actions:
       - test-switch-2
       - test-switch-1
-      - switch
+
