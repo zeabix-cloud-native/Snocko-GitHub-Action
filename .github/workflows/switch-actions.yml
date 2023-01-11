@@ -48,7 +48,7 @@ jobs:
     needs: check-provider
     steps:
       - name: check status
-        if: ${{needs.check-provider.outputs.provider = 'circleci'}}
+        if: ${{needs.check-provider.outputs.provider == 'circleci'}}
         shell: bash                                             # Use bash shell
         run: |
           echo ${{needs.check-provider.outputs.provider}}
