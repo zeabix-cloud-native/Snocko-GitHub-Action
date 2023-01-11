@@ -1,18 +1,34 @@
 version: 2.1
 
+orbs:
+ gh: circleci/github-cli@2.2.0
+
 jobs:
   
   # Add this job to all workflows
   disable-enable:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'cimg/node:lts'
     steps:
-      - run: echo ${CIRCLECISECRET}
+      - gh/setup
       - run:
-          name: Check contexts environment name
+          name: create directory
+          command: |
+            mkdir ./Snocko-GitHub-Action
+      - gh/clone:
+          dir: ./Snocko-GitHub-Action
+          repo: https://github.com/zeabix-cloud-native/Snocko-GitHub-Action.git
+      - run:
+          name: check file
+          command: |
+            ls -lah ./Snocko-GitHub-Action 
+      - run:
+          name: Check provider value
           shell: /bin/bash
           command: |
-              if [[ $CIRCLECISECRET == 'circleci' ]]; then
+              export PROVIDERVALUE=$(cat ./Snocko-GitHub-Action/provider.yaml| yq '.provider')
+              echo Current Provicer = $PROVIDERVALUE
+              if [[ $PROVIDERVALUE == 'circleci' ]]; then
                    echo "Switch context to circle"
                    exit 0
                  else 
