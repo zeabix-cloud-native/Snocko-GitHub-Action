@@ -162,7 +162,6 @@ jobs:
                   exit 0
                 fi
           done <$file
-#          exit 1
       - name: Get enable Github actions workflows                # step name "Get Github actions workflows status"
         shell: bash                                             # Use bash shell
         run: |                                                  # Run command line
