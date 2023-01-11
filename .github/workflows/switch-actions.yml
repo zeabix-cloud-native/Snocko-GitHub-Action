@@ -39,7 +39,7 @@ jobs:
         id: providervalue
         run: |
           export PROVIDERVALUE=$(cat provider.yaml| yq '.provider') 
-          echo $PROVIDERVALUE >> $GITHUB_OUTPUT
+          echo "$PROVIDERVALUE" >> $GITHUB_OUTPUT
           echo Current Provicer = $PROVIDERVALUE
 #          if [[ $PROVIDERVALUE == 'circleci' ]]; then
 #               echo "Switch context to circle"
