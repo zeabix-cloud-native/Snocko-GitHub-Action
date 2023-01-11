@@ -40,13 +40,13 @@ jobs:
         run: |
           export PROVIDERVALUE=$(cat provider.yaml| yq '.provider') >> $GITHUB_OUTPUT
           echo Current Provicer = $PROVIDERVALUE
-          if [[ $PROVIDERVALUE == 'circleci' ]]; then
-               echo "Switch context to circle"
-               exit 0
-             else 
-               echo "Switch context to githubactions"
-          fi
-          exit 99
+#          if [[ $PROVIDERVALUE == 'circleci' ]]; then
+#               echo "Switch context to circle"
+#               exit 0
+#             else 
+#               echo "Switch context to githubactions"
+#          fi
+#          exit 99
       
   change-to-circleci:
     runs-on: ubuntu-latest
