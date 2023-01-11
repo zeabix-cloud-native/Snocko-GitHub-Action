@@ -1,0 +1,8 @@
+repositories:
+  provider:
+    circleci:
+      - test1
+      - test2
+    github-actions:
+      - test3
+      - test4
