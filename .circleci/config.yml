@@ -24,7 +24,7 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-
+      - run: exit 1
       - run: npm install
       - run: npm build
       - run: npm publish
@@ -33,6 +33,7 @@ workflows:
 
   release-workflows:
     jobs:
+
     # Add this job to all workflows
     - disable-enable:
 #        filters:
@@ -49,4 +50,5 @@ workflows:
         requires:
           - "disable-enable" # Add this requires jobs to all workflows
 
-# VS Code Extension Version: 1.4.0
+
+# VS Code Extension Version: 1.5.0
